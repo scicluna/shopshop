@@ -1,6 +1,9 @@
+// React import
 import React from "react";
+// Jumbotron component import
 import Jumbotron from "../components/Jumbotron";
 
+// Just a jsx page for unusual routes
 const NoMatch = () => {
   return (
     <div>

@@ -1,19 +1,29 @@
+// React imports
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
+// import useMutation for gql
+import { useMutation } from '@apollo/client';
+// import LOGIN mutation (gql string)
 import { LOGIN } from '../utils/mutations';
+// import Auth object
 import Auth from '../utils/auth';
 
 function Login(props) {
+  // initializes our form state
   const [formState, setFormState] = useState({ email: '', password: '' });
+  // initializes our LOGIN mutation and prepares us for error catching
   const [login, { error }] = useMutation(LOGIN);
 
+  // async form submitter
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
     try {
+      // tries to log the user in using their email and password
       const mutationResponse = await login({
         variables: { email: formState.email, password: formState.password },
       });
+      // if successful, we know we have a token so we Auth.login with the token
       const token = mutationResponse.data.login.token;
       Auth.login(token);
     } catch (e) {
@@ -21,6 +31,7 @@ function Login(props) {
     }
   };
 
+  // handles the form state changing using destructured name and value from the e.target
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({
@@ -29,6 +40,8 @@ function Login(props) {
     });
   };
 
+  // returns jsx
+  // fields should have required if they are required
   return (
     <div className="container my-1">
       <Link to="/signup">← Go to Signup</Link>

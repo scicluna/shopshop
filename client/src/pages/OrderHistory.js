@@ -1,22 +1,29 @@
+// React imports
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+// gql useQuery import
 import { useQuery } from '@apollo/client';
+// query_user import (gql string)
 import { QUERY_USER } from '../utils/queries';
 
-function OrderHistory() {
-  const { data } = useQuery(QUERY_USER);
-  let user;
 
+function OrderHistory() {
+  // initializes the data from our QUERY_USER (the current user)
+  const { data } = useQuery(QUERY_USER);
+
+  //set user to data.user if data came back not nullish
+  let user;
   if (data) {
     user = data.user;
   }
 
+  //return jsx
   return (
     <>
       <div className="container my-1">
         <Link to="/">← Back to Products</Link>
 
+        {/* conditional on whether or not user is null */}
         {user ? (
           <>
             <h2>

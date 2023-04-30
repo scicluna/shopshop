@@ -29,6 +29,7 @@ const resolvers = {
         };
       }
       // find products that have the matching category or part of the name
+      // can find all if nothing is passed in (INTERESTING)
       return await Product.find(params).populate('category');
     },
 

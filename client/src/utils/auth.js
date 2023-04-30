@@ -1,16 +1,18 @@
 import decode from 'jwt-decode';
 
 class AuthService {
+  // Grabs the current auth token ????
   getProfile() {
     return decode(this.getToken());
   }
 
+  // Checks if there is a saved token and it's still valid
   loggedIn() {
-    // Checks if there is a saved token and it's still valid
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
 
+  // Checks a token for expiration (if decoded.exp < Datenow / 1000)
   isTokenExpired(token) {
     try {
       const decoded = decode(token);
@@ -22,13 +24,13 @@ class AuthService {
     }
   }
 
+  // Retrieves the user token from localStorage
   getToken() {
-    // Retrieves the user token from localStorage
     return localStorage.getItem('id_token');
   }
 
+  // Saves user token to localStorage
   login(idToken) {
-    // Saves user token to localStorage
     localStorage.setItem('id_token', idToken);
 
     window.location.assign('/');

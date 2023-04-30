@@ -1,3 +1,4 @@
+// normal root level setup for react + an optional serrvice worker
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

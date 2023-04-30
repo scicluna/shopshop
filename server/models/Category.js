@@ -1,3 +1,4 @@
+// normal mongoose schema for category
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;

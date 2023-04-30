@@ -1,5 +1,5 @@
+// jwt setup
 const jwt = require('jsonwebtoken');
-
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
@@ -13,10 +13,12 @@ module.exports = {
       token = token.split(' ').pop().trim();
     }
 
+    // Premade-line -- doesn't make sense. If token is null, we already crashed on line 9
     if (!token) {
       return req;
     }
 
+    // Normal jwt verify statement appending a token to req.user
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
@@ -26,6 +28,8 @@ module.exports = {
 
     return req;
   },
+
+  // Method that returns a signed JWT token using the user object as a payload
   signToken: function ({ firstName, email, _id }) {
     const payload = { firstName, email, _id };
 

@@ -1,3 +1,4 @@
+// normal mongoose schema for product
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;

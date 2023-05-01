@@ -56,14 +56,14 @@ const Cart = () => {
       // dispatch that cart into the global context
       // dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
 
-      dispatch(addMultipleToCart({ products: [...indexedCart] }))
+      dispatch(addMultipleToCart(indexedCart))
     }
 
     // if the state's cart is empty, get cart
-    if (cart.length) {
+    if (!cart.length) {
       getCart();
     }
-  }, [cart.length, dispatch]);
+  }, [cart, dispatch]);
 
   // function to dispatch the toggle_cart reducer function
   function toggleCartButton() {
@@ -98,7 +98,7 @@ const Cart = () => {
   // if the cart isn't open, display a cart
   if (!cartOpen) {
     return (
-      <div className="cart-closed" onClick={toggleCart}>
+      <div className="cart-closed" onClick={toggleCartButton}>
         <span role="img" aria-label="trash">
           🛒
         </span>

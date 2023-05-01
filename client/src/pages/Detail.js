@@ -30,7 +30,7 @@ function Detail() {
   // const [state, dispatch] = useStoreContext();
 
   const { cart } = useSelector(state => state.cart)
-  const products = useSelector(state => state.products)
+  const { products } = useSelector(state => state.products)
   const dispatch = useDispatch()
 
   // set id equal to the "id" param in our url
@@ -61,7 +61,7 @@ function Detail() {
       //   products: data.products,
       // });
 
-      dispatch(updateProducts({ products: data.products }))
+      dispatch(updateProducts(data.products))
 
       // then we edit the products Store in our IndexedDB
       data.products.forEach((product) => {
@@ -76,7 +76,7 @@ function Detail() {
         //   products: indexedProducts,
         // });
 
-        dispatch(updateProducts({ products: indexedProducts }))
+        dispatch(updateProducts(indexedProducts))
       });
     }
     // run whenever products, data, loading, dispatch, or id change

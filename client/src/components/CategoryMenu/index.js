@@ -20,11 +20,12 @@ function CategoryMenu() {
   // grab state and dispatch from global state
   // const [state, dispatch] = useStoreContext();
 
-  const categories = useSelector(state => state.categories)
+  const { categories } = useSelector(state => state.categories)
   const dispatch = useDispatch()
 
   // destructure out state.categories
   // const { categories } = state;
+
 
   // loading and categoryData (RENAMED FROM DATA APPARENTLY) destructured from our useQuery(QUERY_CATEGORIES)
   const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
@@ -66,6 +67,7 @@ function CategoryMenu() {
 
     dispatch(updateCurrentCategory(id))
   };
+
 
   // return jsx
   return (

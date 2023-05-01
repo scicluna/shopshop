@@ -25,7 +25,7 @@ function ProductList() {
   // const [state, dispatch] = useStoreContext();
 
   const { currentCategory } = useSelector(state => state.categories)
-  const products = useSelector(state => state.products)
+  const { products } = useSelector(state => state.products)
   const dispatch = useDispatch()
 
   // destructure the current category from the global state

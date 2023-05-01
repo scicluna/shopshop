@@ -20,7 +20,7 @@ import OrderHistory from './pages/OrderHistory';
 
 // New redux implementation
 import store from './store';
-import { Provider } from './react-redux'
+import { Provider } from 'react-redux'
 
 // Set up gql link
 const httpLink = createHttpLink({

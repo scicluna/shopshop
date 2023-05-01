@@ -19,7 +19,7 @@ function ProductItem(item) {
   // grab global state and dispatch
   // const [state, dispatch] = useStoreContext();
 
-  const cart = useSelector(state => state.cart)
+  const { cart } = useSelector(state => state.cart)
   const dispatch = useDispatch()
 
   // destructure image, name, _id, price, and quantity from item

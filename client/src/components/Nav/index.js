@@ -2,9 +2,11 @@ import React from "react";
 import Auth from "../../utils/auth";
 import { Link } from "react-router-dom";
 
+//navbar JSX
 function Nav() {
 
   function showNavigation() {
+    // if we're logged in...
     if (Auth.loggedIn()) {
       return (
         <ul className="flex-row">
@@ -14,7 +16,7 @@ function Nav() {
             </Link>
           </li>
           <li className="mx-1">
-            {/* this is not using the Link component to logout or user and then refresh the application to the start */}
+            {/* this is not using the Link component to logout our user and then refresh the application to the start */}
             <a href="/" onClick={() => Auth.logout()}>
               Logout
             </a>
@@ -22,6 +24,7 @@ function Nav() {
         </ul>
       );
     } else {
+      // if we aren't logged in...
       return (
         <ul className="flex-row">
           <li className="mx-1">
@@ -39,6 +42,7 @@ function Nav() {
     }
   }
 
+  // return jsx
   return (
     <header className="flex-row px-1">
       <h1>

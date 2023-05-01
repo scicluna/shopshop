@@ -16,7 +16,11 @@ import Success from './pages/Success';
 import OrderHistory from './pages/OrderHistory';
 
 // Context import
-import { StoreProvider } from './utils/GlobalState';
+// import { StoreProvider } from './utils/GlobalState';
+
+// New redux implementation
+import store from './store';
+import { Provider } from './react-redux'
 
 // Set up gql link
 const httpLink = createHttpLink({
@@ -51,7 +55,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div>
-          <StoreProvider>
+          <Provider store={store}>
             <Nav />
             <Routes>
               <Route
@@ -83,7 +87,7 @@ function App() {
                 element={<NoMatch />}
               />
             </Routes>
-          </StoreProvider>
+          </Provider>
         </div>
       </Router>
     </ApolloProvider>

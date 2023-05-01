@@ -18,7 +18,7 @@ const cartSlice = createSlice({
             state.cart = newCart
             state.cartOpen = newCart.length > 0
         },
-        //payload must be an array of products
+        //payload must be an array of product objects
         addMultipleToCart: (state, { payload }) => {
             state.cart = [...state.cart, ...payload]
         },

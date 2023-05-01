@@ -12,10 +12,15 @@ import { idbPromise } from '../../utils/helpers';
 import CartItem from '../CartItem';
 // Auth import
 import Auth from '../../utils/auth';
-// useStoreContext hook import
-import { useStoreContext } from '../../utils/GlobalState';
-// action import (just strings)
-import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from '../../utils/actions';
+
+// // useStoreContext hook import
+// import { useStoreContext } from '../../utils/GlobalState';
+// // action import (just strings)
+// import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from '../../utils/actions';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleCart, addMultipleToCart } from '../../reducers/cartReducer';
+
 // import css to use with the cart
 import './style.css';
 
@@ -24,7 +29,11 @@ const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const Cart = () => {
   // grab state and dispatch from the store context
-  const [state, dispatch] = useStoreContext();
+  // const [state, dispatch] = useStoreContext();
+
+  const { cart, cartOpen } = useSelector(state => state.cart)
+  const dispatch = useDispatch()
+
   // useLazyQuery doesn't immediately call the query, but getCheckout will call the query
   const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
 
@@ -43,26 +52,29 @@ const Cart = () => {
     // async function
     async function getCart() {
       // get the cart from ibDB
-      const cart = await idbPromise('cart', 'get');
+      const indexedCart = await idbPromise('cart', 'get');
       // dispatch that cart into the global context
-      dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
+      // dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
+
+      dispatch(addMultipleToCart({ products: [...indexedCart] }))
     }
 
     // if the state's cart is empty, get cart
-    if (!state.cart.length) {
+    if (cart.length) {
       getCart();
     }
-  }, [state.cart.length, dispatch]);
+  }, [cart.length, dispatch]);
 
   // function to dispatch the toggle_cart reducer function
-  function toggleCart() {
-    dispatch({ type: TOGGLE_CART });
+  function toggleCartButton() {
+    // dispatch({ type: TOGGLE_CART });
+    dispatch(toggleCart())
   }
 
   // calculates the total price of the cart
   function calculateTotal() {
     let sum = 0;
-    state.cart.forEach((item) => {
+    cart.forEach((item) => {
       sum += item.price * item.purchaseQuantity;
     });
     return sum.toFixed(2);
@@ -72,7 +84,7 @@ const Cart = () => {
   function submitCheckout() {
     const productIds = [];
 
-    state.cart.forEach((item) => {
+    cart.forEach((item) => {
       for (let i = 0; i < item.purchaseQuantity; i++) {
         productIds.push(item._id);
       }
@@ -84,7 +96,7 @@ const Cart = () => {
   }
 
   // if the cart isn't open, display a cart
-  if (!state.cartOpen) {
+  if (!cartOpen) {
     return (
       <div className="cart-closed" onClick={toggleCart}>
         <span role="img" aria-label="trash">
@@ -97,14 +109,14 @@ const Cart = () => {
   // if cart is open, display jsx
   return (
     <div className="cart">
-      <div className="close" onClick={toggleCart}>
+      <div className="close" onClick={toggleCartButton}>
         [close]
       </div>
       <h2>Shopping Cart</h2>
       {/* if we have something in our cart... */}
-      {state.cart.length ? (
+      {cart.length ? (
         <div>
-          {state.cart.map((item) => (
+          {cart.map((item) => (
             <CartItem key={item._id} item={item} />
           ))}
 

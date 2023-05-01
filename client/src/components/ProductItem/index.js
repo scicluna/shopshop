@@ -3,16 +3,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 //import pluralize utils function
 import { pluralize } from "../../utils/helpers"
-// import useStoreContext hook to access global state
-import { useStoreContext } from "../../utils/GlobalState";
-// import actions (strings)
-import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
+
+// // import useStoreContext hook to access global state
+// import { useStoreContext } from "../../utils/GlobalState";
+// // import actions (strings)
+// import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
+
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, updateCartQuantity } from "../../reducers/cartReducer";
+
 // idb handler
 import { idbPromise } from "../../utils/helpers";
 
 function ProductItem(item) {
   // grab global state and dispatch
-  const [state, dispatch] = useStoreContext();
+  // const [state, dispatch] = useStoreContext();
+
+  const cart = useSelector(state => state.cart)
+  const dispatch = useDispatch()
 
   // destructure image, name, _id, price, and quantity from item
   const {
@@ -24,19 +32,22 @@ function ProductItem(item) {
   } = item;
 
   // destructure cart from state
-  const { cart } = state
+  // const { cart } = state
 
   // add to cart function 
-  const addToCart = () => {
+  const addItemToCart = () => {
     // find the passed in ITEM inside of the cart
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
     // if you find the item... dispatch it and update the cart quantity
     if (itemInCart) {
-      dispatch({
-        type: UPDATE_CART_QUANTITY,
-        _id: _id,
-        purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
-      });
+      // dispatch({
+      //   type: UPDATE_CART_QUANTITY,
+      //   _id: _id,
+      //   purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
+      // });
+
+      dispatch(updateCartQuantity({ _id: _id, purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1 }))
+
       // also update the idb
       idbPromise('cart', 'put', {
         ...itemInCart,
@@ -44,10 +55,13 @@ function ProductItem(item) {
       });
     } else {
       // else, add the item to the cart with a quantity of 1
-      dispatch({
-        type: ADD_TO_CART,
-        product: { ...item, purchaseQuantity: 1 }
-      });
+      // dispatch({
+      //   type: ADD_TO_CART,
+      //   product: { ...item, purchaseQuantity: 1 }
+      // });
+
+      dispatch(addToCart({ ...item, purchaseQuantity: 1 }))
+
       idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
     }
   }
@@ -66,7 +80,7 @@ function ProductItem(item) {
         <div>{quantity} {pluralize("item", quantity)} in stock</div>
         <span>${price}</span>
       </div>
-      <button onClick={addToCart}>Add to cart</button>
+      <button onClick={addItemToCart}>Add to cart</button>
     </div>
   );
 }
